@@ -1,6 +1,7 @@
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config()
 }
+// Calling all the required packages
 
 const express = require('express'); //importing express library that i installed via NPM
 const app = express(); // getting the app portion by calling this function of express
@@ -8,15 +9,21 @@ const expressLayouts = require('express-ejs-layouts'); // getting the express la
 const bodyParser = require('body-parser');
 
 // Reference/Requiring Routers
+
 const indexRouter = require('./routes/index')//reference to the index router inside the require
 const authorRouter = require('./routes/authors')//reference to the author router inside the require
+const bookRouter = require('./routes/books')
 
 // configuring the express application
+// Configurations for setting up ejs engine & displaying static files from "public" folder
 app.set('view engine', 'ejs')
 app.set('views', __dirname + '/views')
 app.set('layout', 'layouts/layout')//hooking express layout
 app.use(expressLayouts)
 app.use(express.static('public')) //telling where my public files will be - stylsheets, javascript of my images
+
+// Configurations for "body-parser"
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -30,6 +37,7 @@ db.once('open', () => console.log('Connected to Mongoose'))
 // Using Routers
 app.use('/', indexRouter)// telling the route path of the application and tell what route we want to handle with that route
 app.use('/authors', authorRouter) // telling the authors path of the application and tell what route we want to handle with that route
+app.use('/books', bookRouter)
 
 // telling my app to listen on a certain port
 app.listen(process.env.PORT || 3000, () => {
