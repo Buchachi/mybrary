@@ -7,6 +7,7 @@ const express = require('express'); //importing express library that i installed
 const app = express(); // getting the app portion by calling this function of express
 const expressLayouts = require('express-ejs-layouts'); // getting the express layouts package that i installed
 const bodyParser = require('body-parser');
+const methodOverride = require('method-override');
 
 // Reference/Requiring Routers
 
@@ -20,12 +21,13 @@ app.set('view engine', 'ejs')
 app.set('views', __dirname + '/views')
 app.set('layout', 'layouts/layout')//hooking express layout
 app.use(expressLayouts)
+app.use(methodOverride('_method'))
 app.use(express.static('public')) //telling where my public files will be - stylsheets, javascript of my images
 
 // Configurations for "body-parser"
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 const mongoose = require('mongoose') // importing mongoose
 //Connecting Mongoose to my database, sending an error when no connection or a response when i have connection
